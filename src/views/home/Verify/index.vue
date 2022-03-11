@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Textarea from '@/components/Textarea/index.vue';
 import useCopy from '@/hooks/useCopy';
 import Button from '@/components/Button/index.vue';
@@ -49,6 +49,15 @@ const verifyVal = ref('');
 const signer = ref('');
 const signMsg = ref('');
 const verifyError = ref(false);
+
+watch(
+  () => verifyVal.value,
+  () => {
+    signer.value = '';
+    signMsg.value = '';
+    verifyError.value = false;
+  }
+);
 
 function submit() {
   signer.value = '';

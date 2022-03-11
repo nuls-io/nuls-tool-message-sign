@@ -3,7 +3,7 @@ import config from '@/config';
 import NULSLogo from '@/assets/img/chainLogo/NULS.png';
 import NERVELogo from '@/assets/img/chainLogo/NERVE.png';
 import ETHLogo from '@/assets/img/chainLogo/ETH.png';
-import BSCLogo from '@/assets/img/chainLogo/BSC.svg';
+import BSCLogo from '@/assets/img/chainLogo/BSC.jpg';
 import HecoLogo from '@/assets/img/chainLogo/Heco.png';
 import OECLogo from '@/assets/img/chainLogo/OEC.png';
 import HarmonyLogo from '@/assets/img/chainLogo/Harmony.png';

@@ -30,7 +30,8 @@ const cn = {
   encrypt: {
     encrypt1: '请填写需要被加密的信息',
     encrypt2: '请填写执行加密任务的公钥',
-    encrypt3: '加密信息'
+    encrypt3: '加密信息',
+    encrypt4: '请输入正确的公钥'
   },
   decrypt: {
     decrypt1: '请填写被加密的信息',

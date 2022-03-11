@@ -44,10 +44,17 @@ async function submit() {
   const transfer = new NTransfer({chain: 'NULS'});
   loading.value = true;
   try {
-    const currentAccount = getCurrentAccount(props.address);
+    // const currentAccount = getCurrentAccount(props.address);
+    let pub = encryptPub.value;
+    if (pub.startsWith('0x')) {
+      pub = pub.substr(2);
+    }
+    if (pub.length !== 66) {
+      throw t('encrypt.encrypt4');
+    }
     const encrypted = await transfer.encryptMsg(
       encryptVal.value,
-      currentAccount.pub
+      pub
     );
     emit('showDialog', true, t('encrypt.encrypt3'), encrypted);
   } catch (e) {

@@ -26,7 +26,7 @@ const config = {
     timeout
   },
   prod: {
-    isBeta: true,
+    isBeta: false,
     NERVE: {
       chainId: 9,
       assetId: 1,

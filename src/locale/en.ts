@@ -16,20 +16,27 @@ const en = {
     public8: 'Clear All'
   },
   sign: {
-    sign1: '请填写签名信息',
-    sign2: '已签名消息'
+    sign1: 'Please fill in the signature',
+    sign2: 'Message Signed',
+    sign3: 'Please switch the plugin to NULS network',
+    sign4: 'Please switch the plugin to NERVE network'
   },
   verify: {
-    verify1: '请填写验证信息',
-    verify2: '签名者: ',
-    verify3: '签名内容: ',
-    verify4: '验证签名失败'
+    verify1: 'Please fill in the verification information',
+    verify2: 'Signer: ',
+    verify3: 'Signature: ',
+    verify4: 'Failed to verify signature'
   },
   encrypt: {
-    encrypt1: ''
+    encrypt1: 'Please fill in the information to be encrypted',
+    encrypt2: 'Please fill in the public key',
+    encrypt3: 'Encrypted Message',
+    encrypt4: 'Please enter the correct public key'
   },
   decrypt: {
-    decrypt1: ''
+    decrypt1: 'Please fill in the encrypted information',
+    decrypt2: 'Message Encrypted: ',
+    decrypt3: 'Failed to decrypt message'
   }
 };
 

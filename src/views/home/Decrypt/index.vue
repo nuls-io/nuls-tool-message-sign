@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Textarea from '@/components/Textarea/index.vue';
 import useCopy from '@/hooks/useCopy';
 import { NTransfer } from '@/utils/api';
@@ -38,6 +38,14 @@ const decryptVal = ref('');
 const decryptedVal = ref('');
 const loading = ref(false);
 const decryptError = ref(false);
+
+watch(
+  () => decryptVal.value,
+  () => {
+    decryptedVal.value = '';
+    decryptError.value = '';
+  }
+);
 
 async function submit() {
   const transfer = new NTransfer({ chain: 'NULS' });

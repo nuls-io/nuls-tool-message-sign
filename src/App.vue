@@ -103,6 +103,7 @@ async function createAccount() {
       accountList.push(account);
     }
     storage.set('accountList', accountList);
+    initProvider();
   } catch (e) {
     ElMessage.error({
       message: e.message || e,

@@ -70,7 +70,7 @@ export function getAccountAndChainId() {
   };
 }
 
-function getChainNameByChainId(chainId: string){
+function getChainNameByChainId(chainId: string) {
   let chainName = 'NULS';
   Object.values(_networkInfo).map(v => {
     if (v[evmNet()] === chainId) {
@@ -92,7 +92,6 @@ export default function useEthereum() {
 
   function initProvider(setListen = true) {
     const { currentAccount, chainId } = getAccountAndChainId();
-    console.log(currentAccount, 789798);
     state.chainId = chainId;
     state.currentChain = getChainNameByChainId(chainId);
     if (currentAccount) {
