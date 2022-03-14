@@ -138,7 +138,7 @@ export const _networkInfo = {
       homestead: 'https://exchainrpc.okex.org'
     }
   },
-  Avalanche: {
+  /*Avalanche: {
     name: 'Avalanche',
     chainId: 110,
     assetKey: isBeta ? '5-94' : '9-267',
@@ -154,7 +154,7 @@ export const _networkInfo = {
       ropsten: 'https://api.avax-test.network/ext/bc/C/rpc',
       homestead: 'https://api.avax.network/ext/bc/C/rpc'
     }
-  },
+  },*/
   Harmony: {
     name: 'Harmony',
     chainId: 105,
@@ -200,7 +200,7 @@ export const _networkInfo = {
     homestead: '',
     decimals: 6
   },
-  Cronos: {
+  /*Cronos: {
     name: 'Cronos',
     chainId: 109,
     assetKey: isBeta ? '5-93' : '9-266',
@@ -250,7 +250,7 @@ export const _networkInfo = {
       ropsten: 'https://rpc.testnet.fantom.network',
       homestead: 'https://rpc.ftm.tools'
     }
-  },
+  },*/
   NULS: {
     name: 'NULS',
     chainId: isBeta ? 2 : 1,
