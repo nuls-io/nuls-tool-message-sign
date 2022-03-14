@@ -18,8 +18,8 @@ const cn = {
   sign: {
     sign1: '请填写签名信息',
     sign2: '已签名消息',
-    sign3: '请切换插件至NULS网络',
-    sign4: '请切换插件至NERVE网络'
+    sign3: '请切换至NULS网络',
+    sign4: '请切换至NERVE网络'
   },
   verify: {
     verify1: '请填写验证信息',

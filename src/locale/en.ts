@@ -10,7 +10,7 @@ const en = {
     public2: 'Copied to clipboard',
     public3: 'Public Key',
     public4: 'Disconnect',
-    public5: 'View in browser',
+    public5: 'View in explorer',
     public6: 'How to use?',
     public7: 'Copy',
     public8: 'Clear All'
@@ -18,8 +18,8 @@ const en = {
   sign: {
     sign1: 'Please fill in the signature',
     sign2: 'Message Signed',
-    sign3: 'Please switch the plugin to NULS network',
-    sign4: 'Please switch the plugin to NERVE network'
+    sign3: 'Please switch to NULS Network',
+    sign4: 'Please switch to NERVE Network'
   },
   verify: {
     verify1: 'Please fill in the verification information',
