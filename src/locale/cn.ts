@@ -13,7 +13,8 @@ const cn = {
     public5: '浏览器中查看',
     public6: '如何使用？',
     public7: '复制',
-    public8: '清除全部'
+    public8: '清除全部',
+    public9: '连接钱包'
   },
   sign: {
     sign1: '请填写签名信息',

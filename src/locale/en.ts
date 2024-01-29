@@ -6,14 +6,15 @@ const en = {
     Decrypt: 'Decrypt'
   },
   public: {
-    public1: 'Generate multi-chain address',
+    public1: 'Generate Multi-Chain Address',
     public2: 'Copied to clipboard',
     public3: 'Public Key',
     public4: 'Disconnect',
-    public5: 'View in explorer',
+    public5: 'View In Browser',
     public6: 'How to use?',
     public7: 'Copy',
-    public8: 'Clear All'
+    public8: 'Clear All',
+    public9: 'Connect Wallet'
   },
   sign: {
     sign1: 'Please fill in the signature',
