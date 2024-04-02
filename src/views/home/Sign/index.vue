@@ -21,12 +21,10 @@ import { ElMessage } from 'element-plus';
 import { getCurrentAccount } from '@/utils/util';
 // @ts-ignore
 import sdk from 'nerve-sdk-js/lib/api/sdk';
-import { getProvider } from '@/hooks/useEthereum';
 
 const { t } = useI18n();
 
 const props = defineProps<{
-  chainId: string;
   address: string;
   pub: string;
 }>();
@@ -45,13 +43,6 @@ async function submit() {
     const currentAccount = getCurrentAccount(props.address);
     if (!currentAccount?.address?.EVM) {
       throw 'Unknown Error';
-    }
-
-    const providerChainId = getProvider().chainId;
-    if (props.chainId === '0x-1' && providerChainId !== '0x-1') {
-      throw t('sign.sign3');
-    } else if (props.chainId === '0x-2' && providerChainId !== '0x-2') {
-      throw t('sign.sign4');
     }
 
     // const EVMAddress = currentAccount.address.EVM;

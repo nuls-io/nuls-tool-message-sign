@@ -1,6 +1,6 @@
 <template>
   <div class="pub-key-wrapper flex-between">
-    <div class="left">公钥 {{ superLong(props.pub, 10) }}</div>
+    <div class="left">Publick Key {{ superLong(props.pub, 10) }}</div>
     <img src="../../../assets/img/copy.svg" alt="" @click="copy(props.pub)" />
   </div>
 </template>

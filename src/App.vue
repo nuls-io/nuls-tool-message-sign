@@ -3,15 +3,12 @@
     <Header
       :address="address"
       :chain="currentChain"
-      :chainId="chainId"
-      :providerType="providerType"
       @switchChain="handleSwitch"
       @disconnect="disconnect"
     />
     <Home
       :address="address"
       :chain="currentChain"
-      :chainId="chainId"
       :providerType="providerType"
       :pub="pub"
       @connect="connectWallet"
@@ -29,7 +26,7 @@
 import { computed, onMounted } from 'vue';
 import Header from '@/components/Header/index.vue';
 import Home from './views/home/index.vue';
-import useEthereum from '@/hooks/useEthereum';
+import useEthereum, { AddChain } from '@/hooks/useEthereum';
 import config from '@/config';
 import storage from '@/utils/storage';
 import { ElMessage } from 'element-plus';
@@ -39,7 +36,6 @@ import type { AccountItem } from '@/views/home/types';
 
 const {
   address,
-  chainId,
   providerType,
   initProvider,
   generateAddress,
@@ -56,33 +52,26 @@ const guideLink = computed(() => {
   const cnLink =
     'https://docs.nuls.io/zh/Guide/g_multiSignature_dapp_Guide.html';
   const enLink = 'https://docs.nuls.io/Guide/g_multiSignature_dapp_Guide.html';
-  return lang.value === 'CN' ? enLink : cnLink;
+  return lang.value === 'Zh' ? enLink : cnLink;
 });
 
 onMounted(() => {
   initProvider();
-  const chain = storage.get('currentChain') || 'NULS';
-  changeTheme(chain);
 });
 
-function changeTheme(chain: string) {
-  // const root = document.getElementById('app') as HTMLElement;
-  // if (chain === 'NULS') {
-  //   root.classList.remove('nerve-chain');
-  // } else {
-  //   root.classList.add('nerve-chain');
-  // }
-}
-
-function handleSwitch(chain: string, chainId: string) {
-  // changeTheme(chain);
-  console.log(chain, chainId, 66)
-  switchChain(chain, chainId);
+function handleSwitch(chain: AddChain) {
+  try {
+    switchChain(chain);
+  } catch (e) {
+    //
+  }
 }
 
 async function connectWallet(type: string) {
   try {
     await connect(type);
+    await createAccount();
+    initProvider();
   } catch (e) {
     ElMessage.error({
       message: e.message || e,
@@ -103,7 +92,6 @@ async function createAccount() {
       accountList.push(account);
     }
     storage.set('accountList', accountList);
-    initProvider();
   } catch (e) {
     ElMessage.error({
       message: e.message || e,

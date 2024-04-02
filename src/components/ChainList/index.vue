@@ -22,8 +22,7 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import useEthereum, { AddChain, getProvider } from '@/hooks/useEthereum';
-import config from '@/config';
+import useEthereum, { AddChain } from '@/hooks/useEthereum';
 
 interface ChainItem extends AddChain {
   logo: string;
@@ -33,23 +32,21 @@ const props = defineProps<{
   show: boolean;
   chainList: any;
   current: string;
-  chainId: string;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:show', show: boolean): void;
-  (e: 'change', chainName: string, chainId: string): void;
+  (e: 'change', chain: AddChain): void;
 }>();
 
 const wrapper = ref<HTMLElement>();
 
 const supportChainList: ChainItem[] = [];
-const net = config.isBeta ? 'ropsten' : 'homestead';
 Object.values(props.chainList).map((v: any) => {
   if (v.supported) {
     supportChainList.push({
-      chainId: v[net],
-      rpcUrls: v.rpcUrl ? [v.rpcUrl[net]] : [],
+      chainId: v.nativeId,
+      rpcUrls: v.rpcUrl ? [v.rpcUrl] : [],
       chainName: v.name,
       nativeCurrency: {
         name: v.name,
@@ -73,26 +70,10 @@ onMounted(() => {
 });
 
 async function switchChain(item: ChainItem) {
-  const { addEthereumChain, switchEthereumChain } = useEthereum();
-  if (item.chainId === props.chainId) return;
-  try {
-    emit('update:show', false);
-    const providerChainId = getProvider().chainId;
-    if (
-      item.chainId === '0x-1' ||
-      item.chainId === '0x-2' ||
-      providerChainId === item.chainId
-    ) {
-      emit('change', item.chainName, item.chainId);
-    } else if (item.chainName !== 'Ethereum') {
-      const { logo, ...rest } = item;
-      await addEthereumChain(rest);
-    } else {
-      await switchEthereumChain({ chainId: item.chainId });
-    }
-  } catch (e) {
-    //
-  }
+  // const { addEthereumChain, switchEthereumChain } = useEthereum();
+  if (item.chainName === props.current) return;
+  emit('update:show', false);
+  emit('change', item);
 }
 </script>
 

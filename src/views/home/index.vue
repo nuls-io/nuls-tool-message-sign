@@ -4,7 +4,7 @@
       <ConnectWallet @connect="type => emit('connect', type)" />
     </template>
     <template v-else-if="!props.address">
-      <Button :title="$t('public.public1')" @click="createAccount" />
+      <Button title="Switch Chain" @click="emit('connect', 'NaboxWallet')" />
     </template>
     <template v-else>
       <CopyWrapper :prefix="$t('public.public3')" :content="props.pub" />
@@ -13,7 +13,6 @@
           <Sign
             ref="SignRef"
             :chain="props.chain"
-            :chainId="props.chainId"
             :address="props.address"
             :pub="props.pub"
             @showDialog="showCopyDialog"
@@ -36,10 +35,7 @@
           />
         </el-tab-pane>
         <el-tab-pane :label="$t('tab.Decrypt')" :name="Tabs.Decrypt">
-          <Decrypt
-            ref="DecryptRef"
-            :address="props.address"
-          />
+          <Decrypt ref="DecryptRef" :address="props.address" />
         </el-tab-pane>
       </el-tabs>
     </template>
@@ -57,14 +53,11 @@ import Sign from './Sign/index.vue';
 import Verify from './Verify/index.vue';
 import Encrypt from './Encrypt/index.vue';
 import Decrypt from './Decrypt/index.vue';
-import CreateAddress from './CreateAddress/index.vue';
-import CreateTx from './CreateTx/index.vue';
 import { Tabs } from './types';
 
 const props = defineProps<{
   providerType: string;
   address: string;
-  chainId: string;
   pub: string;
   chain: string;
 }>();
@@ -72,7 +65,7 @@ const props = defineProps<{
 // const emit = defineEmits(['createAccount', 'connect']);
 const emit = defineEmits<{
   (e: 'createAccount'): void;
-  (e: 'connect'): void;
+  (e: 'connect', type: string): void;
 }>();
 
 watch(

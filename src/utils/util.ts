@@ -136,16 +136,17 @@ export function debounce(fn: any, delay: number) {
 
 export const isBeta = config.isBeta;
 
+export function isNULSOrNERVE(chainName: string) {
+  return chainName === 'NULS' || chainName === 'NERVE';
+}
+
 export function toUrl(chain: string, type = 'address', query: string) {
   let url = _networkInfo[chain].origin;
   if (type === 'address') {
-    url += '/address/' + query;
+    url +=
+      (isNULSOrNERVE(chain) ? '/address/info?address=' : '/address/') + query;
   } else if (type === 'hash') {
-    url += '/tx/' + query;
+    url += (isNULSOrNERVE(chain) ? '/transaction/info?hash=' : '/tx/') + query;
   }
   window.open(url);
-}
-
-export function evmNet() {
-  return config.isBeta ? 'ropsten' : 'homestead';
 }

@@ -43,7 +43,7 @@ watch(
   () => decryptVal.value,
   () => {
     decryptedVal.value = '';
-    decryptError.value = '';
+    decryptError.value = false;
   }
 );
 
@@ -53,7 +53,6 @@ async function submit() {
   try {
     const currentAccount = getCurrentAccount(props.address);
     const NULSAddress = currentAccount.address.NULS;
-    console.log(NULSAddress, 88)
     decryptedVal.value = await transfer.decryptMsg(
       NULSAddress,
       decryptVal.value

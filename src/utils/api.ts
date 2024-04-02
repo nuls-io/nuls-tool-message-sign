@@ -9,7 +9,7 @@ import BufferReader from 'nerve-sdk-js/lib/utils/bufferreader';
 // @ts-ignore
 // import txs from 'nerve-sdk-js/lib/model/txs';
 import config from '@/config';
-import { getProvider } from '@/hooks/useEthereum';
+import { getEVMProvider, getNULSProvider } from '@/hooks/useEthereum';
 // @ts-ignore
 // import Serializers from 'nerve-sdk-js/lib/api/serializers';
 // @ts-ignore
@@ -43,7 +43,7 @@ export class NTransfer {
     this.chainInfo = config[props.chain];
     this.type = props.type; //交易类型
     this.sdk = nerve;
-    this.provider = getProvider();
+    this.provider = getNULSProvider();
   }
 
   validateAddress(address: string) {
@@ -475,17 +475,22 @@ export class ETransfer {
   }
 
   getProvider() {
-    const webProvider = getProvider();
+    const webProvider = getEVMProvider();
     return new ethers.providers.Web3Provider(webProvider);
   }
 
   async signMessage(msg: string, address: string) {
-    const webProvider = getProvider();
+    const EVMProvider = getEVMProvider();
+    const NULSProvider = getNULSProvider();
     const message = this.hexString(msg);
-    return await webProvider.request({
-      method: 'personal_sign',
-      params: [message, address]
-    });
+    if (address.startsWith('0x')) {
+      return await EVMProvider.request({
+        method: 'personal_sign',
+        params: [message, address]
+      });
+    } else {
+      return await NULSProvider.signMessage([message, address]);
+    }
   }
 
   hexString(str: string) {

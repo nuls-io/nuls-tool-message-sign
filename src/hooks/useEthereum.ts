@@ -1,13 +1,12 @@
-import { reactive, toRefs } from 'vue';
-// import { Web3Provider } from "ethers";
-import MetaMask from '@/assets/img/provider/metamask.svg';
+import { reactive, toRefs, onUnmounted } from 'vue';
 import Nabox from '@/assets/img/provider/nabox.svg';
 
 import { ethers } from 'ethers';
 import nerve from 'nerve-sdk-js';
 import storage from '@/utils/storage';
-import { getCurrentAccount, evmNet } from '@/utils/util';
+import { getCurrentAccount } from '@/utils/util';
 import { _networkInfo } from '@/utils/heterogeneousChainConfig';
+import config from '@/config';
 
 interface State {
   address: string;
@@ -45,19 +44,34 @@ interface GenerateAddressConfig {
 const isMobile = /Android|webOS|iPhone|iPod|BlackBerry/i.test(
   navigator.userAgent
 );
-const MetaMaskProvider = 'ethereum';
+
 const NaboxProvier = 'NaboxWallet';
-const OKExProvier = 'okexchain';
 
 export const providerList = [
-  // { name: 'MetaMask', src: MetaMask, provider: MetaMaskProvider },
   { name: 'Nabox', src: Nabox, provider: NaboxProvier }
 ];
 
-export function getProvider(type?: string): any {
+export function getProvider1(type?: string): any {
   if (type) return window[type];
   const providerType = storage.get('providerType');
   return providerType ? window[providerType] : null;
+}
+
+export function getProvider() {
+  const network = storage.get('network');
+  if (network === 'NULS' || network === 'NERVE') {
+    return getNULSProvider();
+  } else {
+    return getEVMProvider();
+  }
+}
+
+export function getEVMProvider() {
+  return window.NaboxWallet || null;
+}
+
+export function getNULSProvider() {
+  return window.NaboxWallet?.nuls || null;
 }
 
 export function getAccountAndChainId() {
@@ -70,16 +84,6 @@ export function getAccountAndChainId() {
   };
 }
 
-function getChainNameByChainId(chainId: string) {
-  let chainName = 'NULS';
-  Object.values(_networkInfo).map(v => {
-    if (v[evmNet()] === chainId) {
-      chainName = v.name;
-    }
-  });
-  return chainName;
-}
-
 export default function useEthereum() {
   const state: State = reactive({
     address: '',
@@ -90,17 +94,24 @@ export default function useEthereum() {
     networkError: ''
   });
 
+  onUnmounted(() => {
+    removeListener();
+  });
+
   function initProvider(setListen = true) {
+    const network = storage.get('network') || 'NULS';
     const { currentAccount, chainId } = getAccountAndChainId();
     state.chainId = chainId;
-    state.currentChain = getChainNameByChainId(chainId);
+    state.currentChain = network;
     if (currentAccount) {
       state.address =
-        currentAccount.address[state.currentChain] ||
-        currentAccount.address.EVM;
+        currentAccount.address[network] || currentAccount.address.EVM;
       state.pub = currentAccount.pub;
-      setListen && listenAccountChange();
-      setListen && listenNetworkChange();
+      if (setListen) {
+        removeListener();
+        listenAccountChange();
+        listenNetworkChange();
+      }
     } else {
       state.address = '';
       state.pub = '';
@@ -108,65 +119,110 @@ export default function useEthereum() {
     // console.log(state, 111)
   }
 
-  // 监听插件账户变动
   function listenAccountChange() {
     const provider = getProvider();
-    provider?.on('accountsChanged', (accounts: string) => {
-      // console.log(accounts, '=======accountsChanged');
-      initProvider(false);
-      if (!accounts.length) {
-        disconnect();
-      }
-    });
+    provider?.on('accountsChanged', handleAccountChange);
   }
 
-  // 监听插件网络变动
   function listenNetworkChange() {
     const provider = getProvider();
-    provider?.on('chainChanged', (chainId: string) => {
-      console.log(chainId, '=======chainId');
-      if (chainId) {
-        initProvider(false);
-      }
-    });
+    provider?.on('chainChanged', handleChainChange);
   }
 
-  // 连接provider
+  function handleAccountChange(accounts: string) {
+    console.log('===accounts===');
+    initProvider(false);
+    if (!accounts.length) {
+      disconnect();
+    }
+  }
+  function handleChainChange(chainId: string) {
+    console.log('===chainId===');
+    if (chainId) {
+      initProvider(false);
+    }
+  }
+
+  function removeListener() {
+    const EVMProvider = getEVMProvider();
+    const NULSProvider = getNULSProvider();
+    if (EVMProvider) {
+      EVMProvider.off('accountsChanged', handleAccountChange);
+      EVMProvider.off('chainChanged', handleChainChange);
+      NULSProvider.off('accountsChanged', handleAccountChange);
+      NULSProvider.off('chainChanged', handleChainChange);
+    }
+  }
+
   async function connect(providerType: string) {
-    const provider = getProvider(providerType);
-    await provider?.request({ method: 'eth_requestAccounts' });
+    const provider = getNULSProvider();
+    const result = await provider?.createSession();
+    await provider.switchChain({ chainId: config.NULS.chainId });
+    state.address = result[0];
+    storage.set('network', 'NULS');
     storage.set('providerType', providerType);
     state.providerType = providerType;
-    initProvider();
   }
 
   function disconnect() {
     storage.remove('providerType');
+    storage.remove('network');
+    state.address = '';
     state.providerType = '';
   }
 
   async function addEthereumChain(params: AddChain) {
-    const provider = getProvider();
-    await provider.request({
-      method: 'wallet_addEthereumChain',
-      params: [params]
-    });
+    const { provider } = getEVMProvider();
+    try {
+      await provider.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: params.chainId }]
+      });
+    } catch (e: any) {
+      if (e.code === 4902) {
+        await provider.request({
+          method: 'wallet_addEthereumChain',
+          params: [params]
+        });
+      }
+    }
   }
 
   async function switchEthereumChain(params: SwitchChain) {
-    const provider = getProvider();
+    const provider = getEVMProvider();
     await provider.request({
       method: 'wallet_switchEthereumChain',
       params: [params]
     });
   }
 
-  function switchChain(chain: string, chainId: string) {
-    state.currentChain = chain;
-    const { currentAccount } = getAccountAndChainId();
-    const addresses = currentAccount.address;
-    state.address = addresses[chain] || addresses.EVM;
-    state.chainId = chainId;
+  async function switchNULSChain(chainId: number) {
+    const provider = getNULSProvider();
+    provider.switchChain({ chainId });
+  }
+
+  async function switchChain(chainItem: AddChain) {
+    const { chainName } = chainItem;
+    const oldNetwork = storage.get('network');
+    if (chainName === 'NULS' || chainName === 'NERVE') {
+      const chain = _networkInfo[chainName];
+      await switchNULSChain(chain.chainId);
+      storage.set('network', chainName);
+      if (oldNetwork !== 'NULS' && oldNetwork !== 'NERVE') {
+        window.location.reload();
+      }
+    } else {
+      await addEthereumChain(chainItem);
+      storage.set('network', chainName);
+      if (oldNetwork === 'NULS' || oldNetwork === 'NERVE') {
+        window.location.reload();
+      }
+    }
+    // state.currentChain = chainName;
+    // const { currentAccount } = getAccountAndChainId();
+    // const addresses = currentAccount.address;
+    // state.address = addresses[chain] || addresses.EVM;
+    // state.chainId = chainId;
     // storage.set('currentChain', chain);
   }
 
@@ -180,41 +236,14 @@ export default function useEthereum() {
       disconnect();
       throw 'Pls connect a provider first';
     }
-    let heterogeneousAddress = '',
-      pub = '';
-    if (!address.startsWith('0x')) {
-      if (!window.nabox) {
-        throw 'Unknown error';
-      }
-      pub = await window.nabox.getPub({
-        address: address
-      });
-      heterogeneousAddress = ethers.utils.computeAddress(
-        ethers.utils.hexZeroPad(ethers.utils.hexStripZeros('0x' + pub), 33)
-      );
-    } else {
-      const provider = getProvider();
-      const EProvider = new ethers.providers.Web3Provider(provider);
-      const jsonRpcSigner = EProvider.getSigner();
-      let message = 'Generate address';
-      const signature = await jsonRpcSigner.signMessage(message);
-      const msgHash = ethers.utils.hashMessage(message);
-      const msgHashBytes = ethers.utils.arrayify(msgHash);
-      const recoveredPubKey = ethers.utils.recoverPublicKey(
-        msgHashBytes,
-        signature
-      );
-      if (recoveredPubKey.startsWith('0x04')) {
-        const compressPub = ethers.utils.computePublicKey(
-          recoveredPubKey,
-          true
-        );
-        heterogeneousAddress = address;
-        pub = compressPub.slice(2);
-      } else {
-        throw 'Sign error';
-      }
-    }
+
+    const pub = await window.nabox.getPub({
+      address
+    });
+    const EVMAddress = ethers.utils.computeAddress(
+      ethers.utils.hexZeroPad(ethers.utils.hexStripZeros('0x' + pub), 33)
+    );
+
     const { chainId, assetId = 1, prefix } = NERVEConfig;
     const NERVEAddress = nerve.getAddressByPub(chainId, assetId, pub, prefix);
     const NULSAddress = nerve.getAddressByPub(
@@ -223,12 +252,11 @@ export default function useEthereum() {
       pub,
       NULSConfig.prefix
     );
-    const chain = storage.get('currentChain') || 'NULS';
-    state.address = chain === 'NULS' ? NULSAddress : NERVEAddress;
+    state.address = address;
     state.pub = pub;
     return {
       address: {
-        EVM: heterogeneousAddress,
+        EVM: EVMAddress,
         NERVE: NERVEAddress,
         NULS: NULSAddress
       },

@@ -21,7 +21,8 @@ class Storage {
 
   set(key: string, value: any, type: StorageType = 'local') {
     const storage = getStorageType(type);
-    storage.setItem(key, JSON.stringify(value));
+    const _value = typeof value === 'string' ? value : JSON.stringify(value);
+    storage.setItem(key, _value);
   }
 
   remove(key: string, type: StorageType = 'local') {

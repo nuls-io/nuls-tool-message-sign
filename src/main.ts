@@ -7,7 +7,6 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 setTimeout(() => {
-  // 不延迟有时刷新会拿不到ethereum.selectedAddress???
   const app = createApp(App);
   app.use(usePlugins).mount('#app');
 }, 500);

@@ -2,10 +2,7 @@
   <div class="header-bar flex-between pd-15">
     <img class="logo" src="../../assets/img/logo.svg" alt="" />
     <div class="right flex-between">
-      <div
-        class="account-wrap theme-bg flex-center"
-        v-if="props.address && props.providerType"
-      >
+      <div class="account-wrap theme-bg flex-center" v-if="props.address">
         <div class="flex-center" @click.stop="showSwitchChain">
           <img class="chain-logo" :src="chainList[props.chain].logo" />
           <el-icon>
@@ -17,7 +14,6 @@
           v-model:show="isShowSwitchChain"
           :chainList="chainList"
           :current="props.chain"
-          :chainId="props.chainId"
           @change="switchChain"
         />
         <span class="theme-text" @click.stop="showAccount = true">
@@ -58,7 +54,7 @@
         </div>
         <div
           class="bottom flex-center"
-          @click="toUrl(props.chain, props.address)"
+          @click="toUrl(props.chain, 'address', props.address)"
         >
           <img src="../../assets/img/view.svg" alt="" />
           <span>{{ $t('public.public5') }}</span>
@@ -75,15 +71,14 @@ import ChainList from '@/components/ChainList/index.vue';
 import useLang from '../../hooks/useLang';
 import useCopy from '@/hooks/useCopy';
 import { _networkInfo } from '@/utils/heterogeneousChainConfig';
+import { AddChain } from '@/hooks/useEthereum';
 
 const props = defineProps<{
   address: string;
   chain: string;
-  chainId: string;
-  providerType: string;
 }>();
 const emit = defineEmits<{
-  (e: 'switchChain', chainName: string, chainId: string): void;
+  (e: 'switchChain', chain: AddChain): void;
   (e: 'disconnect'): void;
 }>();
 
@@ -95,10 +90,8 @@ function showSwitchChain() {
   isShowSwitchChain.value = true;
 }
 
-function switchChain(chainName: string, chainId: string) {
-  console.log(chainName, props.chain, 88)
-  if (chainName === props.chain) return;
-  emit('switchChain', chainName, chainId);
+function switchChain(chain: AddChain) {
+  emit('switchChain', chain);
 }
 
 const showAccount = ref(false);
