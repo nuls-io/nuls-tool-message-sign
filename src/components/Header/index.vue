@@ -113,7 +113,7 @@ const { lang, switchLang } = useLang();
   height: 64px;
 
   .logo {
-    width: 75px;
+    width: 120px;
   }
 
   .nerve-logo {

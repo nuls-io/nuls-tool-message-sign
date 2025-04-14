@@ -1,6 +1,6 @@
-# NULS Message Sign DApp
+# NULS AI Message Sign DApp
 
-NULS Message Sign DApp is used for message signing on blockchains such as NULS and EVM that use ECC encryption algorithms, and also supports encryption and decryption of information.
+NULS AI Message Sign DApp is used for message signing on blockchains such as NULS AI and EVM that use ECC encryption algorithms, and also supports encryption and decryption of information.
 
 https://crypt.nuls.io
 
@@ -36,24 +36,24 @@ Hope more contributors can submit improvement suggestions and bug reports here.
 Issues: https://github.com/nuls-io/sign-tools/issues
 
 
-## Contribute to NULS
-We are committed to making blockchain technology simpler and our slogan is "NULS Making It Easier to Innovate".
+## Contribute to NULS AI
+We are committed to making blockchain technology simpler and our slogan is "NULS AI Making It Easier to Innovate".
 
-Get to know NULS developers
+Get to know NULS AI developers
 https://nuls.io/developer
 
-You are welcome to contribute to NULS! We sincerely invite developers with rich experience in the blockchain field to join the NULS technology community.
+You are welcome to contribute to NULS AI! We sincerely invite developers with rich experience in the blockchain field to join the NULS AI technology community.
 https://nuls.io/community
 
 Documentation：https://docs.nuls.io
 
-NULS Brand Assets: https://nuls.io/brand-assets
+NULS AI Brand Assets: https://nuls.io/brand-assets
 
 
 
 ## License
 
-NULS is released under the [MIT](http://opensource.org/licenses/MIT) license.
+NULS AI is released under the [MIT](http://opensource.org/licenses/MIT) license.
 Modules added in the future may be release under different license, will specified in the module library path.
 
 ## Community

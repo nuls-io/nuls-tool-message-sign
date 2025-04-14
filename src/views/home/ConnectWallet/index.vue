@@ -30,6 +30,8 @@ function connectProvider(provider: string) {
 </script>
 
 <style lang="scss">
+@import '../../../assets/css/theme.scss';
+
 .connect-wallet {
   width: 100%;
   margin: 0 auto;
@@ -63,7 +65,7 @@ function connectProvider(provider: string) {
     border: 1px solid transparent;
 
     &:hover {
-      border-color: #3ad294;
+      border-color: $BASE_NULS;
       color: #333;
     }
 

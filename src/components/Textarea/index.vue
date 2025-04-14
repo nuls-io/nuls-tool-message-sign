@@ -36,6 +36,7 @@ const inputVal = computed({
 </script>
 
 <style lang="scss">
+@import '../../assets/css/theme';
 .n-textarea {
   position: relative;
   .el-textarea .el-textarea__inner {
@@ -47,7 +48,7 @@ const inputVal = computed({
     right: 10px;
     bottom: 6px;
     font-size: 13px;
-    color: #3ad294;
+    color: $BASE_NULS;
     cursor: pointer;
   }
 }

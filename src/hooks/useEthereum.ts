@@ -71,7 +71,7 @@ export function getEVMProvider() {
 }
 
 export function getNULSProvider() {
-  return window.NaboxWallet?.nuls || null;
+  return window.NaboxWallet?.nai || null;
 }
 
 export function getAccountAndChainId() {

@@ -19,7 +19,7 @@ const config = {
       chainId: 2,
       assetId: 1,
       prefix: 'tNULS',
-      symbol: 'NULS',
+      symbol: 'NAI',
       apiUrl: 'http://beta.public1.nuls.io',
       exploreUrl: 'http://beta.nulscan.io'
     },
@@ -39,7 +39,7 @@ const config = {
       chainId: 1,
       assetId: 1,
       prefix: 'NULS',
-      symbol: 'NULS',
+      symbol: 'NAI',
       apiUrl: 'https://public1.nuls.io',
       exploreUrl: 'https://nulscan.io'
     },
