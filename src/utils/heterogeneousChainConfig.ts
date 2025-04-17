@@ -84,64 +84,6 @@ export const _networkInfo = {
       ? 'https://polygon-testnet.public.blastapi.io'
       : 'https://polygon-rpc.com'
   },
-  Heco: {
-    name: 'Heco',
-    chainId: 103,
-    assetKey: isBeta ? '5-9' : '9-55',
-    origin: HecoOrigin,
-    color: '#336adb',
-    mainAsset: 'HT',
-    nativeId: isBeta ? '0x100' : '0x80',
-    supported: true,
-    logo: HecoLogo,
-    decimals: 18,
-    rpcUrl: isBeta
-      ? 'https://http-testnet.hecochain.com'
-      : 'https://http-mainnet.hecochain.com'
-  },
-  OKTC: {
-    name: 'OKTC',
-    chainId: 104,
-    assetKey: isBeta ? '5-12' : '9-87',
-    origin: OECOrigin,
-    color: '#4883ed',
-    mainAsset: 'OKT',
-    nativeId: isBeta ? '0x41' : '0x42',
-    supported: true,
-    logo: OECLogo,
-    decimals: 18,
-    rpcUrl: isBeta
-      ? 'https://exchaintestrpc.okex.org'
-      : 'https://exchainrpc.okex.org'
-  },
-  Harmony: {
-    name: 'Harmony',
-    chainId: 105,
-    assetKey: isBeta ? '5-33' : '9-159',
-    origin: HarmonyOrigin,
-    color: '#5cc9c0',
-    mainAsset: 'ONE',
-    nativeId: isBeta ? '0x6357d2e0' : '0x63564c40',
-    supported: true,
-    logo: HarmonyLogo,
-    decimals: 18,
-    rpcUrl: isBeta ? 'https://api.s0.b.hmny.io' : 'https://api.harmony.one'
-  },
-  KCC: {
-    name: 'KCC',
-    chainId: 107,
-    assetKey: isBeta ? '5-35' : '9-161',
-    origin: KCCOrigin,
-    color: '#66ac90',
-    mainAsset: 'KCS',
-    nativeId: isBeta ? '0x142' : '0x141',
-    supported: true,
-    logo: KCCLogo,
-    decimals: 18,
-    rpcUrl: isBeta
-      ? 'https://rpc-testnet.kcc.network'
-      : 'https://rpc-mainnet.kcc.network'
-  },
   NULS: {
     name: 'NULS',
     chainId: isBeta ? 2 : 1,
