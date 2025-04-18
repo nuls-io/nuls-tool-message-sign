@@ -99,7 +99,7 @@ export default function useEthereum() {
   });
 
   function initProvider(setListen = true) {
-    const network = storage.get('network') || 'NULS';
+    const network = storage.get('network') || 'NULS AI';
     const { currentAccount, chainId } = getAccountAndChainId();
     state.chainId = chainId;
     state.currentChain = network;
@@ -159,7 +159,7 @@ export default function useEthereum() {
     const result = await provider?.createSession();
     await provider.switchChain({ chainId: config.NULS.chainId });
     state.address = result[0];
-    storage.set('network', 'NULS');
+    storage.set('network', 'NULS AI');
     storage.set('providerType', providerType);
     state.providerType = providerType;
   }
@@ -204,17 +204,17 @@ export default function useEthereum() {
   async function switchChain(chainItem: AddChain) {
     const { chainName } = chainItem;
     const oldNetwork = storage.get('network');
-    if (chainName === 'NULS' || chainName === 'NERVE') {
+    if (chainName === 'NULS AI' || chainName === 'NERVE') {
       const chain = _networkInfo[chainName];
       await switchNULSChain(chain.chainId);
       storage.set('network', chainName);
-      if (oldNetwork !== 'NULS' && oldNetwork !== 'NERVE') {
+      if (oldNetwork !== 'NULS AI' && oldNetwork !== 'NERVE') {
         window.location.reload();
       }
     } else {
       await addEthereumChain(chainItem);
       storage.set('network', chainName);
-      if (oldNetwork === 'NULS' || oldNetwork === 'NERVE') {
+      if (oldNetwork === 'NULS AI' || oldNetwork === 'NERVE') {
         window.location.reload();
       }
     }

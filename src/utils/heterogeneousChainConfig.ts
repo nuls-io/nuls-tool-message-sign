@@ -84,13 +84,13 @@ export const _networkInfo = {
       ? 'https://polygon-testnet.public.blastapi.io'
       : 'https://polygon-rpc.com'
   },
-  NULS: {
-    name: 'NULS',
+  'NULS AI': {
+    name: 'NULS AI',
     chainId: isBeta ? 2 : 1,
     assetKey: isBeta ? '2-1' : '1-1',
     origin: NULSOrigin,
     color: '#00da9d',
-    mainAsset: 'NULS',
+    mainAsset: 'NAI',
     nativeId: '0x-1',
     supported: true,
     logo: NULSLogo
