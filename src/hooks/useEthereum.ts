@@ -104,8 +104,9 @@ export default function useEthereum() {
     state.chainId = chainId;
     state.currentChain = network;
     if (currentAccount) {
+      const _network = network === 'NULS AI' ? 'NULS' : network;
       state.address =
-        currentAccount.address[network] || currentAccount.address.EVM;
+        currentAccount.address[_network] || currentAccount.address.EVM;
       state.pub = currentAccount.pub;
       if (setListen) {
         removeListener();
